@@ -159,4 +159,4 @@ Finally, bear in mind examples can be used with any of:
 - Cookie()
 - Body()
 - Form()
-- File()
+- File() -> files are uploaded as form data

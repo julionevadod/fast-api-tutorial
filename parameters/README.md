@@ -143,3 +143,6 @@ Find [here](https://fastapi.tiangolo.com/tutorial/path-params-numeric-validation
 # 4. Other kind of parameters
 - Cookie Parameters
 - Header Parameters
+
+# 5. File data
+TBA
