@@ -139,3 +139,7 @@ For sure, validation of other datatypes like numbers can be performed, as well a
 All of them accept the same parameters as Query()
 
 Find [here](https://fastapi.tiangolo.com/tutorial/path-params-numeric-validations/) additional tips on numeric validations
+
+# 4. Other kind of parameters
+- Cookie Parameters
+- Header Parameters

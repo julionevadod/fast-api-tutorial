@@ -77,3 +77,86 @@ class BodyClass(BaseModel):
     attr1: str | None
     attr2: int
 ```
+
+# 5. Example data
+Example data can be provided to Body fields. This is a quite interesting feature since this examples will be added to automatic documentation by OpenAPI. We can provide example data in three ways:
+
+1. Using the **model_config** attribute in the class defining the body:
+```python
+class BodyClass(BaseModel):
+    id: str
+    name: str
+    attr1: str | None
+    attr2: int
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                "id": "1a2s3f5",
+                "name": "test_name",
+                "attr1": "value1",
+                "attr2": 37
+            ]
+        }
+    }
+```
+2. As a parameter of **Field()** object: 
+```python
+class BodyClass(BaseModel):
+    id: str
+    name: str =  Field(
+        default=None, title="name of the item", max_length=300, examples = ["test_name"]
+    )
+    attr1: str | None
+    attr2: int
+```
+3. Using open_api_examples in **Body()** object call. Swagger UI has the limitation that only shows a single example. We can overcome this limitation using this third method. the **open_api_examples** parameter is a dict, where each example should be the value of a specific key. These examples will be shown as a selectbox where the name in the selectbox will be these keys.
+```python
+@app.put("/items/{item_id}")
+async def update_item(
+    *,
+    item_id: int,
+    item: Annotated[
+        Item,
+        Body(
+            openapi_examples={
+                "normal": {
+                    "summary": "A normal example",
+                    "description": "A **normal** item works correctly.",
+                    "value": {
+                        "name": "Foo",
+                        "description": "A very nice Item",
+                        "price": 35.4,
+                        "tax": 3.2,
+                    },
+                },
+                "converted": {
+                    "summary": "An example with converted data",
+                    "description": "FastAPI can convert price `strings` to actual `numbers` automatically",
+                    "value": {
+                        "name": "Bar",
+                        "price": "35.4",
+                    },
+                },
+                "invalid": {
+                    "summary": "Invalid data is rejected with an error",
+                    "value": {
+                        "name": "Baz",
+                        "price": "thirty five point four",
+                    },
+                },
+            },
+        ),
+    ],
+):
+...
+```
+
+Finally, bear in mind examples can be used with any of:
+- Path()
+- Query()
+- Header()
+- Cookie()
+- Body()
+- Form()
+- File()
